@@ -5,7 +5,7 @@ library(data.table)
 
 ## read data files from home directory
 
-
+setwd("~/Documents/ContImprove/R Programming/Getting-and-Cleaning-Data-Project/UCI HAR Dataset")
 
 mytestdataX <- read.table(file = "test/X_test.txt", header = FALSE, sep = "")
 mytestdataY <- read.table("test/Y_test.txt", header = FALSE)
@@ -20,25 +20,28 @@ activity <- read.table("activity_labels.txt")
 
 ## bind rows of test and train 
 
-X <- rbind(mytestdataX,mytraindataX)
-Y <- rbind(mytestdataY,mytraindataY)
-Subject <- rbind(Subject_Test,Subject_Train)
 
-## add column
+X <- rbind(mytestdataX, mytraindataX)
+Y <- rbind(mytestdataY, mytraindataY)
+Subject <- rbind(Subject_Test, Subject_Train)
 
-X$Subject <- Subject$V1
+
 
 ## select names with mean and std
 
 names(X) <- make.names(features$V2, unique = TRUE)
 X <- select(X, matches("mean|std"))
 
+## add Subject column
+
+X$Subject <- Subject$V1
+
 X$V1 <- Y$V1
 
-X <- left_j
-join(X, activity)
 
-X <- select(X, Subject,V2,1:86,-V1)
+X <- left_join(X, activity)
+
+X <- select(X, Subject, V2, 1:86, -V1)
 
 ## add activity names that are descriptive
 
